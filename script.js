@@ -1,91 +1,94 @@
 
-const gridDefault = 16;
+const DEFAULT_SIZE = 16;
+const DEFAULT_COLOR = 'bisque';
+const COLOR_HOVER = '#e66465';
+
+let currentColor = DEFAULT_COLOR;
+let colorHover = COLOR_HOVER;
+let colorLightness = 0;
+
 const container = document.querySelector('#container');
 
-let celda = {
-    colorBase: 'bisque',
-    colorHover: '#e66465',
-    colorLightness: 0
-}
 
-function gridGenerator(gridLength = gridDefault) {
-    let cells = gridLength * gridLength
-    let gridElem = document.getElementById('grid');
+function gridGenerator(size = DEFAULT_SIZE) {
+    let gridSize = size * size
+    let grid = document.getElementById('grid');
     
-    if (gridElem != null) {
-        gridElem.remove();
+    if (grid != null) {
+        grid.remove();
     }
 
-    gridElem = document.createElement('div');
-    gridElem.setAttribute('id','grid');
-    gridElem.style.gridTemplateColumns = "repeat(" + gridLength + ", 1fr)";
-    gridElem.style.gridTemplateRows = "repeat(" + gridLength + ", 1fr)";
-    container.appendChild(gridElem);
+    grid = document.createElement('div');
+    grid.setAttribute('id','grid');
+    grid.style.gridTemplateColumns = `repeat(${size},1fr)`;
+    grid.style.gridTemplateRows = `repeat(${size},1fr)`;
+    container.appendChild(grid);
 
-    for (let i=0; i < cells; i++) {
-        const elem = document.createElement('div');
-        elem.classList.add('celda');
-        gridElem.appendChild(elem);
-        elem.addEventListener('mouseenter', () => {
-            elem.style.backgroundColor = celda.colorHover;
+    for (let i=0; i < gridSize; i++) {
+        const gridElement = document.createElement('div');
+        gridElement.classList.add('grid-element');
+        gridElement.addEventListener('mouseenter', () => {
+            gridElement.style.backgroundColor = colorHover;
         })
+        grid.appendChild(gridElement);
     }
 }
 
-/* Range */
-const range = document.getElementById('myRange');
-const output = document.getElementById('range-value');
-range.oninput = function() {
-    output.textContent = this.value;
+/* Grid size */
+const sizeSlider = document.getElementById('sizeSlider');
+const sizeValue = document.getElementById('sizeValue');
+sizeSlider.oninput = function() {
+    sizeValue.textContent = this.value;
     gridGenerator(this.value);
 }
 
-/* Reset */
-const reset = document.getElementById('reset');
-reset.addEventListener('click', () => {
-    const celdas = document.querySelectorAll('.celda');
-    celdas.forEach((e) => {
-        e.style.backgroundColor = celda.colorBase;
+/* Clear */
+const clearBtn = document.getElementById('clearBtn');
+clearBtn.addEventListener('click', () => {
+    const elements = document.querySelectorAll('.grid-element');
+    elements.forEach((e) => {
+        e.style.backgroundColor = currentColor;
     })
 })
 
-/* Random colors */
-const randonButtom = document.getElementById('random-colors');
-randonButtom.addEventListener('click', () => {
-    const celdas = document.querySelectorAll('.celda');
-    celdas.forEach((e) => {
+/* Rainbow colors */
+const rainbowBtn = document.getElementById('rainbowBtn');
+rainbowBtn.addEventListener('click', () => {
+    const elements = document.querySelectorAll('.grid-element');
+    elements.forEach((e) => {
         e.addEventListener('mouseenter', () => {
-            celda.colorHover = generateColor();
+            colorHover = generateColor();
         })
     })
 })
 
 /* Opacity : No tiene en cuenta el color de cada celda */
 /* hay que hacer una clase, para poder usar el this para cada celda */
-const opacityButtom = document.getElementById('opacity');
-opacityButtom.addEventListener('click', () => {
-    const celdas = document.querySelectorAll('.celda');
-    celdas.forEach((e) => {
+const opacityBtn = document.getElementById('opacity');
+opacityBtn.addEventListener('click', () => {
+    const elements = document.querySelectorAll('.grid-element');
+    elements.forEach((e) => {
         e.addEventListener('mouseenter', () => {
-            celda.colorHover = `hsl(0, 0%, ${Math.min(celda.colorLightness, 100)}%)`;
-            celda.colorLightness += 5;
+            colorHover = `hsl(0, 0%, ${Math.min(colorLightness, 100)}%)`;
+            colorLightness += 5;
         })
     })
 })
 
-/* Choose color */
-const colorPicker = document.getElementById('choose-color');
+/* Color Picker */
+const colorPicker = document.getElementById('colorPicker');
 colorPicker.addEventListener('change', () => {
-    const celdas = document.querySelectorAll('.celda');
-    celdas.forEach((e) => {
+    const elements = document.querySelectorAll('.grid-element');
+    elements.forEach((e) => {
         e.addEventListener('mouseenter', () => {
-            celda.colorHover = colorPicker.value;
+            colorHover = colorPicker.value;
         })
     })
 })
 
 gridGenerator();
 
+/* Utility functions */
 function generateColor() {
     /* En Hexa: let color = Math.floor(Math.random()*16777215).toString(16) */
     const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
@@ -97,4 +100,5 @@ function generateColor() {
 
 // TODO:
 /* aumentar la intencidad del gris con multiples pasadas, hasta llegar a negro */
-/* revisar nombres */
+/* el primer cuadrado que pinta, siempre es del color original, el cambio lo hace en el segundo */
+/* revisar código duplicado */

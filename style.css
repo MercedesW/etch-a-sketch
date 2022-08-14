@@ -11,12 +11,12 @@ body {
 
 #grid {
     display: grid;
-    width: 500px;/* hay que sumarle el borde */
+    width: 500px;
     height: 500px;
     background-color: bisque;
     border: 1px solid coral;
 }
 
-.celda {
+.grid-element {
     border: 1px solid coral;
 }
