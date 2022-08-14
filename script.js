@@ -1,5 +1,4 @@
 
-/* 1. agregar al container una cuadrícula de 16x16 cuadrados */
 const gridDefault = 16;
 const container = document.querySelector('#container');
 
@@ -27,16 +26,12 @@ function gridGenerator(gridLength = gridDefault) {
         })
     }
 }
-/* Me gustaría hacer un Range input, hay que ver como tomar el valor actual */
-const cells = document.getElementById('number-cells');
-/* console.log(cells.getAttribute('value')) */
-cells.addEventListener('click', () => {
-    result = window.prompt('Ingresar la cantidad de celdas de alto de la grilla');
-    let amountGrid = result;
-    gridGenerator(amountGrid);
-})
+
+const range = document.getElementById('myRange');
+const output = document.getElementById('range-value');
+range.oninput = function() {
+    output.textContent = this.value;
+    gridGenerator(this.value);
+}
 
 gridGenerator();
-
-
-// TODO:

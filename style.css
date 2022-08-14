@@ -14,5 +14,9 @@ body {
     width: 500px;/* hay que sumarle el borde */
     height: 500px;
     background-color: bisque;
+    border: 1px solid coral;
 }
 
+.celda {
+    border: 1px solid coral;
+}
