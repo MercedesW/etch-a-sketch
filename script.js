@@ -4,7 +4,8 @@ const container = document.querySelector('#container');
 
 let celda = {
     colorBase: 'bisque',
-    colorHover: 'red'
+    colorHover: 'red',
+    colorLightness: 0
 }
 
 function gridGenerator(gridLength = gridDefault) {
@@ -59,6 +60,20 @@ randonButtom.addEventListener('click', () => {
     })
 })
 
+/* Opacity : No tiene en cuenta el color de cada celda */
+/* hay que hacer una clase, para poder usar el this para cada celda */
+const opacityButtom = document.getElementById('opacity');
+opacityButtom.addEventListener('click', () => {
+    const celdas = document.querySelectorAll('.celda');
+    celdas.forEach((e) => {
+        e.addEventListener('mouseenter', () => {
+            celda.colorHover = `hsl(0, 0%, ${Math.min(celda.colorLightness, 100)}%)`;
+            celda.colorLightness += 5;
+            console.log()
+        })
+    })
+})
+
 gridGenerator();
 
 function generateColor() {
@@ -72,6 +87,5 @@ function generateColor() {
 
 // TODO:
 /* aumentar la intencidad del gris con multiples pasadas, hasta llegar a negro */
-/* pintar con color negro */
 /* pintar con color elegido */
 /* revisar nombres */
