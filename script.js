@@ -2,15 +2,25 @@
 const DEFAULT_SIZE = 16;
 const DEFAULT_COLOR = 'bisque';
 const COLOR_HOVER = '#e66465';
+const DEFAULT_MODE = 'color';
 
 let currentColor = DEFAULT_COLOR;
 let colorHover = COLOR_HOVER;
 let colorLightness = 0;
+let currentMode = DEFAULT_MODE;
 
 const container = document.querySelector('#container');
 
 
-function gridGenerator(size = DEFAULT_SIZE) {
+/* Grid size */
+const sizeSlider = document.getElementById('sizeSlider');
+const sizeValue = document.getElementById('sizeValue');
+sizeSlider.oninput = function() {
+    sizeValue.textContent = this.value;
+    createGrid(this.value);
+}
+
+function createGrid(size = DEFAULT_SIZE) {
     let gridSize = size * size
     let grid = document.getElementById('grid');
     
@@ -27,19 +37,19 @@ function gridGenerator(size = DEFAULT_SIZE) {
     for (let i=0; i < gridSize; i++) {
         const gridElement = document.createElement('div');
         gridElement.classList.add('grid-element');
-        gridElement.addEventListener('mouseenter', () => {
-            gridElement.style.backgroundColor = colorHover;
-        })
+        gridElement.addEventListener('mouseenter', changeColor)
         grid.appendChild(gridElement);
     }
 }
 
-/* Grid size */
-const sizeSlider = document.getElementById('sizeSlider');
-const sizeValue = document.getElementById('sizeValue');
-sizeSlider.oninput = function() {
-    sizeValue.textContent = this.value;
-    gridGenerator(this.value);
+function changeColor(e) {
+    if (currentMode === 'color') {
+        e.target.style.backgroundColor = colorHover;
+    } else if (currentMode === 'rainbow') {
+        e.target.style.backgroundColor = generateColor();
+    } else if (currentMode === 'eraser') {
+        e.target.style.backgroundColor = currentColor;
+    }
 }
 
 /* Clear */
@@ -51,15 +61,18 @@ clearBtn.addEventListener('click', () => {
     })
 })
 
+/* Eraser */
+const eraserBtn = document.getElementById('eraserBtn');
+eraserBtn.addEventListener('click', () => {
+    currentMode = 'eraser';
+    changeColor;
+})
+
 /* Rainbow colors */
 const rainbowBtn = document.getElementById('rainbowBtn');
 rainbowBtn.addEventListener('click', () => {
-    const elements = document.querySelectorAll('.grid-element');
-    elements.forEach((e) => {
-        e.addEventListener('mouseenter', () => {
-            colorHover = generateColor();
-        })
-    })
+    currentMode = 'rainbow';
+    changeColor;
 })
 
 /* Opacity : No tiene en cuenta el color de cada celda */
@@ -78,15 +91,12 @@ opacityBtn.addEventListener('click', () => {
 /* Color Picker */
 const colorPicker = document.getElementById('colorPicker');
 colorPicker.addEventListener('change', () => {
-    const elements = document.querySelectorAll('.grid-element');
-    elements.forEach((e) => {
-        e.addEventListener('mouseenter', () => {
-            colorHover = colorPicker.value;
-        })
-    })
+    currentMode = 'color';
+    colorHover = colorPicker.value;
+    changeColor;
 })
 
-gridGenerator();
+createGrid();
 
 /* Utility functions */
 function generateColor() {
@@ -101,4 +111,3 @@ function generateColor() {
 // TODO:
 /* aumentar la intencidad del gris con multiples pasadas, hasta llegar a negro */
 /* el primer cuadrado que pinta, siempre es del color original, el cambio lo hace en el segundo */
-/* revisar código duplicado */
