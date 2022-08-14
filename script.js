@@ -2,8 +2,12 @@
 const gridDefault = 16;
 const container = document.querySelector('#container');
 
+let celda = {
+    colorBase: 'bisque',
+    colorHover: 'red'
+}
+
 function gridGenerator(gridLength = gridDefault) {
-    console.log(gridLength)
     let cells = gridLength * gridLength
     let gridElem = document.getElementById('grid');
     
@@ -22,11 +26,12 @@ function gridGenerator(gridLength = gridDefault) {
         elem.classList.add('celda');
         gridElem.appendChild(elem);
         elem.addEventListener('mouseenter', () => {
-            elem.style.backgroundColor = 'red';
+            elem.style.backgroundColor = celda.colorHover;
         })
     }
 }
 
+/* Range */
 const range = document.getElementById('myRange');
 const output = document.getElementById('range-value');
 range.oninput = function() {
@@ -34,4 +39,19 @@ range.oninput = function() {
     gridGenerator(this.value);
 }
 
+/* Reset */
+const reset = document.getElementById('reset');
+reset.addEventListener('click', () => {
+    const celdas = document.querySelectorAll('.celda');
+    celdas.forEach((e) => {
+        e.style.backgroundColor = celda.colorBase;
+    })
+})
+
 gridGenerator();
+
+
+// TODO:
+/* pintar con colores random */
+/* aumentar la intencidad del gris con multiples pasadas, hasta llegar a negro */
+/* revisar nombres */
