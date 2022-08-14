@@ -9,16 +9,10 @@ body {
     background-color: lightblue;
 }
 
-/* usar grid en .container para acomodar los divs en una cuadrícula de 16x16 */
-#container {
+#grid {
     display: grid;
-    grid-template-columns: repeat(16, 1fr);
-    width: 16rem;/* hay que sumarle el borde */
+    width: 500px;/* hay que sumarle el borde */
+    height: 500px;
     background-color: bisque;
 }
 
-.celda {
-    /* border: 1px solid pink; */
-    width: 1rem;
-    height: 1rem;
-}
