@@ -48,10 +48,30 @@ reset.addEventListener('click', () => {
     })
 })
 
+/* Random colors */
+const randonButtom = document.getElementById('random-colors');
+randonButtom.addEventListener('click', () => {
+    const celdas = document.querySelectorAll('.celda');
+    celdas.forEach((e) => {
+        e.addEventListener('mouseenter', () => {
+            celda.colorHover = generateColor();
+        })
+    })
+})
+
 gridGenerator();
 
+function generateColor() {
+    /* En Hexa: let color = Math.floor(Math.random()*16777215).toString(16) */
+    const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+    const r = randomBetween(0, 255);
+    const g = randomBetween(0, 255);
+    const b = randomBetween(0, 255);
+    return `rgb(${r},${g},${b})`;
+}
 
 // TODO:
-/* pintar con colores random */
 /* aumentar la intencidad del gris con multiples pasadas, hasta llegar a negro */
+/* pintar con color negro */
+/* pintar con color elegido */
 /* revisar nombres */
