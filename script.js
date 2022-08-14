@@ -4,7 +4,7 @@ const container = document.querySelector('#container');
 
 let celda = {
     colorBase: 'bisque',
-    colorHover: 'red',
+    colorHover: '#e66465',
     colorLightness: 0
 }
 
@@ -69,7 +69,17 @@ opacityButtom.addEventListener('click', () => {
         e.addEventListener('mouseenter', () => {
             celda.colorHover = `hsl(0, 0%, ${Math.min(celda.colorLightness, 100)}%)`;
             celda.colorLightness += 5;
-            console.log()
+        })
+    })
+})
+
+/* Choose color */
+const colorPicker = document.getElementById('choose-color');
+colorPicker.addEventListener('change', () => {
+    const celdas = document.querySelectorAll('.celda');
+    celdas.forEach((e) => {
+        e.addEventListener('mouseenter', () => {
+            celda.colorHover = colorPicker.value;
         })
     })
 })
@@ -87,5 +97,4 @@ function generateColor() {
 
 // TODO:
 /* aumentar la intencidad del gris con multiples pasadas, hasta llegar a negro */
-/* pintar con color elegido */
 /* revisar nombres */
