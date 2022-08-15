@@ -51,6 +51,11 @@ function changeColor() {
     } else if (currentMode === 'grayScale') {
         let currentOpacity = Number(this.style.backgroundColor.slice(-4, -1));
         this.style.backgroundColor = `rgba(0, 0, 0, ${Math.min(currentOpacity + 0.1, 1)})`;
+    } else if (currentMode === 'warm') {
+        this.style.backgroundColor = generateColor('warm', ['#BF6A6D', '#A45256', '#EC6760', '#F88C5D', '#FDCF6D']);
+    }
+    else if (currentMode === 'cold') {
+        this.style.backgroundColor = generateColor('cold', ['#5590BC', '#0DABB8', '#01F0F6', '#1FFDE1', '#57FFC8']);
     }
 }
 
@@ -77,6 +82,20 @@ rainbowBtn.addEventListener('click', () => {
     changeColor;
 })
 
+/* Warm colors */
+const warmBtn = document.getElementById('warmBtn');
+warmBtn.addEventListener('click', () => {
+    currentMode = 'warm';
+    changeColor;
+})
+
+/* Cold colors */
+const coldBtn = document.getElementById('coldBtn');
+coldBtn.addEventListener('click', () => {
+    currentMode = 'cold';
+    changeColor;
+})
+
 /* Grey scale */
 const grayScaleBtn = document.getElementById('grayScaleBtn');
 grayScaleBtn.addEventListener('click', () => {
@@ -95,11 +114,16 @@ colorPicker.addEventListener('change', () => {
 createGrid();
 
 /* Utility functions */
-function generateColor() {
-    /* En Hexa: let color = Math.floor(Math.random()*16777215).toString(16) */
-    const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
-    const r = randomBetween(0, 255);
-    const g = randomBetween(0, 255);
-    const b = randomBetween(0, 255);
-    return `rgb(${r},${g},${b})`;
+function generateColor(name, colors) {
+    let randomColors;
+    if (name === 'warm' || name === 'cold') {
+        randomColors = colors[Math.floor(Math.random() * colors.length)];
+    } else {
+        const randomBetween = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
+        const r = randomBetween(0, 255);
+        const g = randomBetween(0, 255);
+        const b = randomBetween(0, 255);
+        randomColors = `rgb(${r},${g},${b})`;
+    }
+    return randomColors;
 }
