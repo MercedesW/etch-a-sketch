@@ -6,7 +6,6 @@ const DEFAULT_MODE = 'color';
 
 let currentColor = DEFAULT_COLOR;
 let colorHover = COLOR_HOVER;
-let colorLightness = 0;
 let currentMode = DEFAULT_MODE;
 
 const container = document.querySelector('#container');
@@ -42,13 +41,16 @@ function createGrid(size = DEFAULT_SIZE) {
     }
 }
 
-function changeColor(e) {
+function changeColor() {
     if (currentMode === 'color') {
-        e.target.style.backgroundColor = colorHover;
+        this.style.backgroundColor = colorHover;
     } else if (currentMode === 'rainbow') {
-        e.target.style.backgroundColor = generateColor();
+        this.style.backgroundColor = generateColor();
     } else if (currentMode === 'eraser') {
-        e.target.style.backgroundColor = currentColor;
+        this.style.backgroundColor = currentColor;
+    } else if (currentMode === 'grayScale') {
+        let currentOpacity = Number(this.style.backgroundColor.slice(-4, -1));
+        this.style.backgroundColor = `rgba(0, 0, 0, ${Math.min(currentOpacity + 0.1, 1)})`;
     }
 }
 
@@ -75,17 +77,11 @@ rainbowBtn.addEventListener('click', () => {
     changeColor;
 })
 
-/* Opacity : No tiene en cuenta el color de cada celda */
-/* hay que hacer una clase, para poder usar el this para cada celda */
-const opacityBtn = document.getElementById('opacity');
-opacityBtn.addEventListener('click', () => {
-    const elements = document.querySelectorAll('.grid-element');
-    elements.forEach((e) => {
-        e.addEventListener('mouseenter', () => {
-            colorHover = `hsl(0, 0%, ${Math.min(colorLightness, 100)}%)`;
-            colorLightness += 5;
-        })
-    })
+/* Grey scale */
+const grayScaleBtn = document.getElementById('grayScaleBtn');
+grayScaleBtn.addEventListener('click', () => {
+    currentMode = 'grayScale';
+    changeColor;
 })
 
 /* Color Picker */
@@ -107,7 +103,3 @@ function generateColor() {
     const b = randomBetween(0, 255);
     return `rgb(${r},${g},${b})`;
 }
-
-// TODO:
-/* aumentar la intencidad del gris con multiples pasadas, hasta llegar a negro */
-/* el primer cuadrado que pinta, siempre es del color original, el cambio lo hace en el segundo */
